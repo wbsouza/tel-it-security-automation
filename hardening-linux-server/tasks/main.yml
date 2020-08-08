@@ -201,14 +201,7 @@
   yum:
     name: "{{ item }}"
     state: present
-  with_items:
-    - git
-    - rpcbind
-    - policycoreutils-python
-    - setools
-    - device-mapper-persistent-data
-    - lvm2
-    - docker-ce
+  with_items: ['git', 'rpcbind', 'selinux-policy', 'libselinux-util', 'docker-ce']
   when: 
     - ansible_os_family == "RedHat"
     - config_req_17 | default(true)
