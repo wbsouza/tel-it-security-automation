@@ -83,6 +83,35 @@
 # configuration. That's why relevante tasks are placed here!
 # -------------------------------------------------------------------------
 
+
+- name: Install EPEL CentoOS repository
+  yum:
+    name: epel-release
+    state: present
+  when: 
+    - ansible_os_family == "RedHat"
+    - config_req_17 | default(true)
+    - ansible_check_mode == false
+
+- name: Install device-mapper-persistent-data
+  yum:
+    name: device-mapper-persistent-data
+    state: latest
+  when: 
+    - ansible_os_family == "RedHat"
+    - config_req_17 | default(true)
+    - ansible_check_mode == false
+
+- name: Add Docker repo
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docer-ce.repo
+  become: yes
+  when: 
+    - ansible_os_family == "RedHat"
+    - config_req_17 | default(true)
+    - ansible_check_mode == false
+
 - name: req-017.0 upgrade linux os (redhat)
   yum:
     name: '*'
@@ -159,6 +188,24 @@
 # Installation of MAC solution must be placed here because of error when 
 # installation is done in linux(05)mandatory-access-control.yml 
 # -------------------------------------------------------------------------
+
+- name: Install packages for CentOS 
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - git
+    - rpcbind
+    - policycoreutils-python
+    - setools
+    - device-mapper-persistent-data
+    - lvm2
+    - docker-ce
+  when: 
+    - ansible_os_family == "RedHat"
+    - config_req_17 | default(true)
+    - ansible_check_mode == false
+
 
 - name: req-050.0 ensure either SELinux or AppArmor are installed
   package:
