@@ -93,6 +93,14 @@
     - config_req_17 | default(true)
     - ansible_check_mode == false
 
+- name: Install containerd from CentOS7 repo
+  command: yum install -y --nogpgcheck https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.2.6-3.3.el7.x86_64.rpm
+  when: 
+    - ansible_os_family == "RedHat"
+    - config_req_17 | default(true)
+    - ansible_check_mode == false
+
+
 - name: Install device-mapper-persistent-data
   yum:
     name: device-mapper-persistent-data
