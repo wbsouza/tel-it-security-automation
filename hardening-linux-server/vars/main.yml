@@ -216,7 +216,7 @@ network_config_ipv6_enabled:
 
 # Req-19: User accounts must be used that allow unambiguous identification 
 #         of the user.
-set_allowed_users: "{{ allowed_users | default('[devsecops]') }}"
+set_allowed_users: "{{ allowed_users | default('[wiseadm]') }}"
 
 # Req-20: System accounts must be non-login.
 system_users_whitelist:
